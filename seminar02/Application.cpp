@@ -56,12 +56,13 @@ void Application::render() {
   //          far - distance from camera where we should not see anything (for example 100.0f)
   //          use glm::radians(degrees) to convert degrees to radians
   // glm::mat4 projection_matrix = ...;
-  //glm::mat4 projection_matrix = glm::mat4(1.f);
+  glm::mat4 projection_matrix = glm::perspective(glm::radians(45.f), aspect_ratio, 0.1f, 100.f);
 
   // TASK 1: Upload projection matrix to the shader
   //         use glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, glm::value_ptr(matrix))
   //         go to shader main.vert and finish the task there
   // ...
+  glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, glm::value_ptr(projection_matrix));
 
   // TASK 2: create and set view matrix
   //         use glm::lookAt(eye position, center of view, up vector of space) function
@@ -70,6 +71,8 @@ void Application::render() {
   //         use glm::vec3(0.0f, 1.0f, 0.0f) - Y axis pointing up - as up vector
   //         go to main.vert again and add multiplication using view matrix
   // ...
+  glm::mat4 view_matrix = glm::lookAt(glm::vec3(-5.0f, 10.f, 2.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,1.0f,0.0f));
+  glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, glm::value_ptr(view_matrix));
 
   // Draw cube
   cube.bind_vao();
@@ -81,6 +84,8 @@ void Application::render() {
   //         you can simply use time as an angle
   // glm::mat4 cube_model_matrix = glm::mat4(1.0);
   // ...
+  glm::mat4 cube_model_matrix = glm::rotate(glm::mat4(1.0), time, glm::vec3(0.f, 1.f, 0.f));
+  glUniformMatrix4fv(model_matrix_loc, 1, GL_FALSE, glm::value_ptr(cube_model_matrix));
 
   cube.draw();
 
@@ -88,6 +93,13 @@ void Application::render() {
   // TASK 5: observe overlapping of erroneous overlapping of objects polygons
   //         you should fix this by enabling depth buffer usage in init function
 
+  teapot.bind_vao();
+  glUniform3f(color_loc, 1.0f, 1.0f, 1.0f);
+  //glm::mat4 teapot_model_matrix = glm::rotate(glm::mat4(1.0), time, glm::vec3(1.f, 0.f, 1.f));
+  glm::mat4 teapot_model_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(1.f, 1.f, 5.f));
+  teapot_model_matrix = glm::rotate(teapot_model_matrix, time, glm::vec3(1.f, 0.f, 1.f));
+  glUniformMatrix4fv(model_matrix_loc, 1, GL_FALSE, glm::value_ptr(teapot_model_matrix));
+  teapot.draw();
   // (BONUS)
   // - draw more objects(using for loop)
   // - animate color uniform
