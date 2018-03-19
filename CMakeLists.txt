@@ -105,7 +105,7 @@ set(IMAGE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/images")
 
 add_subdirectory(seminar01)
 add_subdirectory(seminar02)
-# add_subdirectory(seminar03)
+add_subdirectory(seminar03)
 # add_subdirectory(seminar04_textures)
 # add_subdirectory(seminar04_blending)
 # add_subdirectory(seminar05)
