@@ -63,11 +63,16 @@ void main() {
     // TASK 5:
     // Sum all the phong components into final color value
 
-    vec3 color = ambient + diffuse + specular;
+    //vec3 color = ambient + diffuse + specular;
 
     // TASK 6:
     // Add ANY attenuation, for example Inverse Square Law
     // Hint: Do not apply any attenuation for Directional Light! Why?
+
+    float dist = distance(vertex_position_ws, light_position.xyz);
+    float attenuation = 1.0/dist*dist;
+
+    vec3 color = ambient + diffuse*attenuation + specular;
 
     final_color = vec4(color, 1.0);//*Intensity;//vec4(0.0, 0.0, 1.0, 1.0)*Intensity;
 }
